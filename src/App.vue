@@ -1,9 +1,9 @@
 <template>
   <div id="app">
     <TodoHeader></TodoHeader>
-    <TodoInput></TodoInput>
-    <TodoList></TodoList>
-    <TodoFooter></TodoFooter>
+    <TodoInput v-on:addTodoItem="addOneItem"></TodoInput>
+    <TodoList v-bind:propsdata="todoItems" v-on:removeItem="removeOneItem" v-on:toggleItem="toggleOneItem"></TodoList>
+    <TodoFooter v-on:clearAll="clearAllItem"></TodoFooter>
   </div>
 </template>
 <script>
@@ -16,6 +16,44 @@ import TodoFooter from './components/TodoFooter.vue';
 
 
 export default {
+  data: function(){
+    return{
+      todoItems: []
+    }
+  },
+  methods:{
+    addOneItem:function(todoItem){
+      var obj ={completed: false, item: todoItem};
+      // 저장하는 로직
+      localStorage.setItem(todoItem, JSON.stringify(obj)); //자바스크립트를 스트링으로 변환
+      this.todoItems.push(obj);
+    },
+    removeOneItem:function(todoItem, index){
+      localStorage.removeItem(todoItem.item);
+      this.todoItems.splice(index, 1); //특정 index에서 하나 지움
+    },
+    toggleOneItem:function(todoItem, index){
+      // todoItem.completed = !todoItem.completed;
+      // 동작과는 상관이 없지만 조금 더 명확한 코드
+      this.todoItems[index].completed = !this.todoItems[index].completed;
+      //로컬 스토리지에 갱신하는 과정
+      localStorage.removeItem(todoItem.item); //업데이트가 없기 때문에 삭제하고 다시 만들어 줌
+      localStorage.setItem(todoItem.item, JSON.stringify(todoItem));
+    },
+    clearAllItem:function(){
+      localStorage.clear();
+      this.todoItems=[];
+    }
+  },
+   created:function(){
+        if(localStorage.length>0){
+            for(var i =0; i<localStorage.length; i++){
+                if(localStorage.key(i) !== 'loglevel:webpack-dev-server'){
+                   this.todoItems.push(JSON.parse(localStorage.getItem(localStorage.key(i))));
+                }
+            }
+        }
+    },
 
   components:{
     //컴포넌트 태그명: 컴포넌트 내용

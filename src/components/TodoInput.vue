@@ -1,5 +1,5 @@
 <template>
-    <div class="inputBox shadow">
+    <div class="shadow inputBox">
         <input type="text" v-model="newTodoItem" v-on:keyup.enter="addTodo">
         <span class="addContainer" v-on:click="addTodo">
             +
@@ -16,9 +16,8 @@ export default {
     methods:{
         addTodo: function(){
             if(this.newTodoItem !==''){
-                var obj ={completed: false, item: this.newTodoItem};
-                // 저장하는 로직
-                localStorage.setItem(this.newTodoItem, JSON.stringify(obj)); //자바스크립트를 스트링으로 변환
+                // this.$emit('이벤트 이름', 인자1, 인자2...);
+                this.$emit('addTodoItem', this.newTodoItem);
                 this.clearInput();
             }
         },
@@ -29,7 +28,7 @@ export default {
 }
 </script>
 <style scoped>
-input.focus{
+input:focus{
     outline: none;
 }
 .inputBox{
