@@ -14,7 +14,8 @@ import TodoFooter from './components/TodoFooter.vue';
 
 
 
-
+//상위로 올려서 처리하려고 app.vue 사용
+//하위를 사용하는 이유는 재사용을 하기 위해서 ui 표현을 위함
 export default {
   data: function(){
     return{

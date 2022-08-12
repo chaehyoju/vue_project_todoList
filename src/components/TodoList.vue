@@ -1,6 +1,6 @@
 <template>
     <div>
-        <ul>
+        <transition-group name="list" tag="ul">
             <li v-for="(todoItem, index) in propsdata" v-bind:key="todoItem.item" class="shadow">
             <span class="checkBtn" v-bind:class="{checkBtnCompleted: todoItem.completed}" v-on:click="toggleComplete(todoItem, index)">체크</span>
             <span v-bind:class="{textCompleted: todoItem.completed}">{{todoItem.item}}</span>
@@ -8,7 +8,7 @@
                 삭제
             </span>
             </li>
-        </ul>
+        </transition-group>
     </div>
 </template>
 <script>
@@ -57,5 +57,17 @@ export default {
     .removeBtn{
         margin-left: auto;
         color: #de4343;
+    }
+    /* 리스트 아이템 트랜지션 효과
+    vue2는 list-enter를 사용하지만 vue3는 from을 붙여 줘야 됨 문법이 다름
+    */
+    .list-enter-active,
+    .list-leave-active {
+        transition: all 1s;
+    }
+    .list-enter-from,
+    .list-leave-to /* .list-leave-active below version 2.1.8 */ {
+        opacity: 0;
+        transform: translateY(30px);
     }
 </style>

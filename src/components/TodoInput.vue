@@ -4,13 +4,26 @@
         <span class="addContainer" v-on:click="addTodo">
             +
         </span>
+
+        <!-- <Modal v-if="showModal" @close="showModal = false">
+            <h3 slot="header">경고</h3>
+        </Modal> -->
+        <Modal v-if="showModal" @close="showModal = true">
+            <template v-slot:header>
+                <h3>경고</h3>
+            </template>
+        </Modal>
     </div>
 </template>
 <script>
+import Modal from "./common/ModalForm.vue";
+
 export default {
+
     data: function(){
         return{
-            newTodoItem: ""
+            newTodoItem: "",
+            showModal: false
         }
     },
     methods:{
@@ -20,9 +33,16 @@ export default {
                 this.$emit('addTodoItem', this.newTodoItem);
                 this.clearInput();
             }
+            else{
+                //true, false 변환
+                this.showModal=!this.showModal;
+            }
         },
         clearInput: function(){
             this.newTodoItem='';
+        },
+        components:{
+            Modal: Modal
         }
     }
 }
